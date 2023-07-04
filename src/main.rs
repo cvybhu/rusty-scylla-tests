@@ -68,6 +68,32 @@ enum Command {
         #[arg(long, short = 'c', default_value_t = 32)]
         insert_concurrency: usize,
     },
+    /// Runs the write_two_nodes_third_slower test
+    WriteTwoNodesThirdSlower {
+        /// Addresses of nodes to connect to, should be 3 nodes, the third should be the slower one.
+        #[arg(long, short, num_args = 1.., value_delimiter=',', default_values_t = ["127.0.0.1".to_string(), "127.0.0.2".to_string(), "127.0.0.3".to_string()])]
+        nodes: Vec<String>,
+
+        /// Concurrency used for inserting values
+        #[arg(long, short, default_value_t = 128)]
+        insert_concurrency: usize,
+
+        /// Concurrency used for selecting values
+        #[arg(long, short, default_value_t = 4)]
+        select_concurrency: usize,
+
+        /// Replication factor to use
+        #[arg(long, short, default_value_t = 3)]
+        replication_factor: usize,
+
+        /// Create a materialized view before starting the workload
+        #[arg(long, short, default_value_t = false)]
+        create_mv: bool,
+
+        /// Total number of rows that will be inserted
+        #[arg(long, short, default_value_t = 10_000_000_000)]
+        total_rows: usize,
+    },
 }
 
 #[tokio::main]
@@ -112,6 +138,24 @@ async fn main() {
                 views_count,
                 workload_rows,
                 insert_concurrency,
+            )
+            .await;
+        }
+        Command::WriteTwoNodesThirdSlower {
+            nodes,
+            insert_concurrency,
+            select_concurrency,
+            create_mv,
+            replication_factor,
+            total_rows,
+        } => {
+            tests::write_two_nodes_third_slower::write_two_nodes_third_slower(
+                &nodes,
+                insert_concurrency,
+                select_concurrency,
+                create_mv,
+                replication_factor,
+                total_rows,
             )
             .await;
         }

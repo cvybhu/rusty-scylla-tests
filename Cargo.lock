@@ -382,6 +382,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "12cb882ccb290b8646e554b157ab0b71e64e8d5bef775cd66b6531e52d302669"
 
 [[package]]
+name = "histogram"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0978bb4ae7b21dded5037bc688271ec01443b6eb2c7713aad75fce2cf670923"
+dependencies = [
+ "thiserror",
+]
+
+[[package]]
 name = "iana-time-zone"
 version = "0.1.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -723,6 +732,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "futures",
+ "histogram 0.7.3",
  "rand",
  "scylla",
  "tokio",
@@ -748,7 +758,7 @@ dependencies = [
  "chrono",
  "dashmap",
  "futures",
- "histogram",
+ "histogram 0.6.9",
  "itertools",
  "lz4_flex",
  "num-bigint",
